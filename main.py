@@ -1,15 +1,17 @@
 #!/usr/bin/env python3
 # Entry for "Sum up 24 November's world news in one image".
-# The entry is the finished picture held in this folder, entry.png.
-# This script only places that picture where the judge expects it:
-# /output/entry.png (or a path given on the command line).
-# It never touches the network, never uses the clock, and never
-# invents bytes, so every run writes exactly the same file.
+# This script draws the finished picture with build_image.py (Pillow,
+# fixed layout, no network, no clock, no random numbers), writes it
+# as entry.png next to this script, then places it where the judge
+# expects it: /output/entry.png (or a path given on the command line).
+# Every run writes exactly the same bytes.
 import argparse
 import hashlib
 import os
 import sys
 from pathlib import Path
+
+import build_image
 
 HERE = Path(__file__).parent
 PICTURE = HERE / "entry.png"
@@ -22,6 +24,7 @@ def digest(path):
 
 def run(target):
     target.parent.mkdir(parents=True, exist_ok=True)
+    build_image.build()
     if not PICTURE.exists():
         print("entry.png is missing from this folder", file=sys.stderr)
         return 1

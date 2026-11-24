@@ -61,31 +61,32 @@ def rule(draw, x, y, w, fill=INK, width=2):
 
 
 def draw_factory_fire(draw, x, y, w, h):
-    # Sky, factory block, flames and smoke.
+    # Night sky, factory block, layered flames and rising smoke.
     draw.rectangle([x, y, x + w, y + h], fill=(52, 58, 72))
-    draw.rectangle([x, y + h - 60, x + w, y + h], fill=(30, 30, 30))
+    draw.rectangle([x, y + h - 44, x + w, y + h], fill=(30, 30, 30))
     # factory block
-    draw.rectangle([x + 30, y + h - 150, x + w - 30, y + h - 60], fill=(96, 92, 84))
+    draw.rectangle([x + 30, y + h - 150, x + w - 30, y + h - 44], fill=(96, 92, 84))
     draw.rectangle([x + 30, y + h - 150, x + w - 30, y + h - 138], fill=(70, 66, 60))
     # chimney
     draw.rectangle([x + w - 90, y + 60, x + w - 60, y + h - 140], fill=(80, 76, 70))
-    # windows
+    # windows, lit from inside
     for i in range(5):
         wx = x + 55 + i * 62
         draw.rectangle([wx, y + h - 130, wx + 34, y + h - 100], fill=(255, 190, 60))
-    # flames
-    flame = [(x + 60, y + h - 140), (x + 90, y + h - 210), (x + 120, y + h - 150),
-             (x + 150, y + h - 225), (x + 185, y + h - 150), (x + 215, y + h - 205),
-             (x + 250, y + h - 145), (x + 290, y + h - 195), (x + 330, y + h - 140)]
+    # flames: outer orange tongues, inner yellow core
+    flame = [(x + 60, y + h - 140), (x + 78, y + h - 205), (x + 100, y + h - 155),
+             (x + 122, y + h - 220), (x + 148, y + h - 160), (x + 172, y + h - 210),
+             (x + 198, y + h - 150), (x + 226, y + h - 200), (x + 252, y + h - 150),
+             (x + 282, y + h - 190), (x + 310, y + h - 140)]
     draw.polygon(flame, fill=ORANGE)
-    flame2 = [(x + 100, y + h - 140), (x + 130, y + h - 185), (x + 165, y + h - 150),
-              (x + 200, y + h - 195), (x + 240, y + h - 145), (x + 270, y + h - 175),
-              (x + 300, y + h - 140)]
+    flame2 = [(x + 100, y + h - 140), (x + 118, y + h - 180), (x + 142, y + h - 148),
+              (x + 168, y + h - 190), (x + 196, y + h - 150), (x + 224, y + h - 178),
+              (x + 252, y + h - 140)]
     draw.polygon(flame2, fill=(255, 200, 40))
-    # smoke
-    for cx, cy, r in [(x + 130, y + 45, 26), (x + 190, y + 30, 32),
-                      (x + 250, y + 50, 24), (x + 310, y + 35, 28)]:
-        draw.ellipse([cx - r, cy - r, cx + r, cy + r], fill=(150, 150, 150))
+    # smoke: small dark puffs rising above the chimney, clear of the flames
+    for cx, cy, r in [(x + 330, y + 26, 13), (x + 360, y + 16, 16),
+                      (x + 388, y + 28, 11)]:
+        draw.ellipse([cx - r, cy - r, cx + r, cy + r], fill=(90, 90, 96))
 
 
 def draw_kyiv(draw, x, y, w, h):
@@ -97,10 +98,14 @@ def draw_kyiv(draw, x, y, w, h):
         draw.rectangle([bx, y + h - 40 - hh, bx + 46, y + h - 40], fill=(18, 20, 28))
         bx += 56
     draw.rectangle([x, y + h - 40, x + w, y + h], fill=(14, 14, 18))
-    # explosion burst
+    # explosion burst with rays, not a plain disc
     cx, cy = x + w - 110, y + 70
     for r, col in [(46, (255, 200, 60)), (34, (255, 140, 30)), (20, (255, 220, 120))]:
         draw.ellipse([cx - r, cy - r, cx + r, cy + r], fill=col)
+    for dx, dy in [(-58, -18), (58, -22), (-44, 34), (52, 30), (0, -62),
+                   (-70, 6), (70, 4)]:
+        draw.line([(cx, cy), (cx + dx, cy + dy)], fill=(255, 170, 40),
+                  width=5)
     # sparks
     for sx, sy in [(cx - 60, cy + 20), (cx + 55, cy - 30), (cx - 40, cy - 45),
                    (cx + 70, cy + 35), (cx, cy - 60)]:
@@ -127,21 +132,25 @@ def draw_climate(draw, x, y, w, h):
 
 def draw_handshake(draw, x, y, w, h):
     draw.rectangle([x, y, x + w, y + h], fill=(250, 244, 224))
-    # two flags: India saffron/white/green, Nepal crimson/blue
-    draw.rectangle([x + 20, y + 10, x + 150, y + 32], fill=(255, 153, 51))
-    draw.rectangle([x + 20, y + 32, x + 150, y + 54], fill=(255, 255, 255))
-    draw.rectangle([x + 20, y + 54, x + 150, y + 76], fill=(19, 136, 8))
-    draw.ellipse([x + 72, y + 34, x + 98, y + 56], outline=(0, 0, 128), width=3)
-    draw.rectangle([x + w - 150, y + 10, x + w - 20, y + 76], fill=(220, 20, 60))
-    draw.polygon([(x + w - 150, y + 10), (x + w - 20, y + 10), (x + w - 20, y + 76),
-                  (x + w - 150, y + 76)], outline=(0, 0, 128), width=4)
-    draw.polygon([(x + w - 130, y + 26), (x + w - 60, y + 26), (x + w - 95, y + 60)],
-                 fill=(255, 255, 255))
-    # clasped hands, simple
-    draw.rounded_rectangle([x + 120, y + 84, x + w - 120, y + 112], radius=12,
-                           fill=(200, 150, 110))
-    draw.rounded_rectangle([x + 150, y + 92, x + w - 150, y + 104], radius=6,
-                           fill=(170, 120, 85))
+    # India: saffron, white, green with the chakra
+    draw.rectangle([x + 20, y + 8, x + 168, y + 28], fill=(255, 153, 51))
+    draw.rectangle([x + 20, y + 28, x + 168, y + 48], fill=(255, 255, 255))
+    draw.rectangle([x + 20, y + 48, x + 168, y + 68], fill=(19, 136, 8))
+    draw.ellipse([x + 80, y + 28, x + 108, y + 50], outline=(0, 0, 128),
+                 width=3)
+    # Nepal: two stacked crimson pennants with a blue border
+    draw.polygon([(x + 268, y + 8), (x + 268, y + 40), (x + 388, y + 24)],
+                 fill=(220, 20, 60), outline=(0, 0, 128))
+    draw.polygon([(x + 268, y + 44), (x + 268, y + 76), (x + 398, y + 60)],
+                 fill=(220, 20, 60), outline=(0, 0, 128))
+    draw.ellipse([x + 292, y + 18, x + 306, y + 32], fill=(255, 255, 255))
+    draw.ellipse([x + 292, y + 54, x + 306, y + 68], fill=(255, 255, 255))
+    # gold seal between the flags: the 8 deals
+    draw.ellipse([x + 196, y + 22, x + 240, y + 66], fill=(176, 124, 12))
+    draw.text((x + 206, y + 34), "8", font=font(SANS_B, 26),
+              fill=(255, 255, 255))
+    draw.text((x + 176, y + 82), "8 DEALS SIGNED", font=font(SANS_B, 18),
+              fill=(176, 124, 12))
 
 
 def draw_chip(draw, x, y, w, h):
@@ -181,15 +190,15 @@ def build():
     # Lead story: Indonesia factory fire
     y = 158
     y = headline(d, 40, y, "FACTORY FIRE KILLS 24 IN INDONESIA",
-                 font(SERIF, 36), 520, leading=44)
+                 font(SERIF, 34), 520, leading=42)
     y += 8
     y = para(d, 40, y, "Candy factory blaze leaves about 30 workers missing",
              font(SANS_B, 22), 520, fill=RED, leading=28)
     y += 8
     para(d, 40, y,
          "At least 24 people are dead after a huge fire tore through a "
-         "candy factory in Indonesia. Rescuers are still searching "
-         "for around 30 missing workers.",
+         "candy factory in Cikande, Indonesia. Rescuers are still "
+         "searching for around 30 missing workers.",
          font(SANS, 21), 500, leading=28)
     draw_factory_fire(d, 580, 158, 404, 230)
     d.text((580, 392), "Firefighters search the burned-out factory.",
@@ -205,13 +214,13 @@ def build():
     draw_climate(d, 532, y, 452, 150)
     y += 158
     para(d, 40, y,
-         "Russian drones and missiles hit the Kyiv region, killing "
-         "several people. Ukraine says it sank a Russian warship off "
-         "the coast of Libya.",
+         "A Russian strike on Dymer, north of Kyiv, kills 11. A boy "
+         "of 7 is pulled alive from the rubble after 14 hours, and a "
+         "79-year-old woman after 22 hours.",
          font(SANS, 20), 452, leading=27)
     para(d, 532, y,
          "The UN climate summit ends with no deal after the row over "
-         "fossil fuels. Talks may be put off until next year.",
+         "fossil fuels, the first failure since 2009.",
          font(SANS, 20), 452, leading=27)
     rule(d, 40, 750, 944, fill=INK, width=2)
 
@@ -228,20 +237,22 @@ def build():
          "package for energy and trade.",
          font(SANS, 18), 452, leading=24)
     para(d, 532, y,
-         "Jensen Huang is back as Nvidia chief. The chip maker gains "
-         "almost $1 trillion in value.",
+         "Nvidia brings back Jensen Huang as chief. Shares surge by "
+         "a third, adding about $1 trillion.",
          font(SANS, 18), 452, leading=24)
     rule(d, 40, 986, 944, fill=INK, width=2)
 
     # Also today strip
     y = 996
-    d.text((40, y), "ALSO TODAY:", font=font(SANS_B, 18), fill=RED)
-    d.text((185, y),
-           "Alcaraz wins ATP Finals  |  Gukesh in chess title defence  |  UN court: Myanmar guilty of Rohingya genocide",
-           font=font(SANS, 15), fill=INK)
+    d.text((40, y), "ALSO TODAY:", font=font(SANS_B, 16), fill=RED)
+    d.text((168, y),
+           "Democrats take the US House  |  South Korea scrambles jets over Russian planes  |  CrowdStrike to buy Zscaler for $44bn",
+           font=font(SANS, 14), fill=INK)
 
-    img.save("entry.png", format="PNG", optimize=True)
-    print("wrote entry.png")
+    from pathlib import Path
+    out = Path(__file__).parent / "entry.png"
+    img.save(out, format="PNG", optimize=True)
+    print(f"wrote {out}")
 
 
 if __name__ == "__main__":
