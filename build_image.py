@@ -2,7 +2,7 @@
 """Build the news front page for Tuesday 24 November 2026.
 
 Draws a newspaper front page with PIL (standard library + Pillow) and
-writes entry.png next to this script. Fully deterministic: no network,
+writes the image to the path it is given. Fully deterministic: no network,
 no clock, no random numbers, fixed fonts, fixed layout.
 """
 from PIL import Image, ImageDraw, ImageFont
@@ -174,7 +174,7 @@ def draw_chip(draw, x, y, w, h):
     draw.text((x + 18, y + 12), "+$1 TRILLION", font=font(SANS_B, 26), fill=(255, 255, 255))
 
 
-def build():
+def build(target):
     img = Image.new("RGB", (W, H), PAPER)
     d = ImageDraw.Draw(img)
 
@@ -249,11 +249,12 @@ def build():
            "Democrats take the US House  |  South Korea scrambles jets over Russian planes  |  CrowdStrike to buy Zscaler for $44bn",
            font=font(SANS, 14), fill=INK)
 
-    from pathlib import Path
-    out = Path(__file__).parent / "entry.png"
-    img.save(out, format="PNG", optimize=True)
-    print(f"wrote {out}")
+    img.save(target, format="PNG", optimize=True)
+    print(f"wrote {target}")
 
 
 if __name__ == "__main__":
-    build()
+    import sys
+    from pathlib import Path
+
+    build(Path(sys.argv[1]) if len(sys.argv) > 1 else Path("/output/entry.png"))
